@@ -24,44 +24,7 @@ if (CCamerasSocnet::isEnabledSocnet() && !empty($arParams['SOCNET_GROUP_ID'])) {
         return;
     }
 }
-echo 'CCamerasSocnet  ' . CCamerasSocnet::$iCatId;
-exit();
-$arSelect = Array("ID", "IBLOCK_ID", "*");
-$arFilter = array(
-    'IBLOCK_ID' => $arParams['IBLOCK_ID'],
-	'SECTION_ID' => CCamerasSocnet::$iCatId
-);
 
-/*echo '<br/> $arFilter '. __LINE__.'* ' .  __FILE__ . ' <pre>';
-print_r($arFilter);
-echo '</pre>';*/
-$res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
-
-//$arResult = Array();
-$ob = $res->GetNextElement();
-if($ob) {
-    $arFields = $ob->GetFields();
-    $iblockSectionId = $arFields["IBLOCK_SECTION_ID"];
-}else{
-    return 0;
-}
-/*while($ob = $res->GetNextElement())
-{
-    $arFields = $ob->GetFields();
-    echo '<br/> $arFields '. __LINE__.'* ' .  __FILE__ . ' <pre>';
-    print_r($arFields);
-    echo '</pre>';
-    $arProps = $ob->GetProperties();
-    echo '<br/> $arProps '. __LINE__.'* ' .  __FILE__ . ' <pre>';
-    print_r($arProps);
-    echo '</pre>';
-
-    $arResult["AVAILABLE_CAMERAS"][$arProps["CAMERA_ID"]["VALUE"]] = 1;
-}*/
-
-/*echo '<br/> $arResult["AVAILABLE_CAMERAS"] '. __LINE__.'* ' .  __FILE__ . ' <pre>';
-print_r($arResult["AVAILABLE_CAMERAS"]);
-echo '</pre>';*/
 
 $arSelect = Array("ID", "IBLOCK_ID", "NAME", "IBLOCK_SECTION_ID", "*", "PROPERTY_*");
 $arFilter = Array(
@@ -90,7 +53,14 @@ while($ob = $db_list->GetNextElement()){
     print_r($arProps);
     echo '</pre>';*/
 
-    $arResult["CAMERAS_ALL_ITEMS"][$arFields["ID"]] = $arFields;
+    $arResult["CAMERAS_ALL_ITEMS_NOT_SORTED"][$arFields["ID"]] = $arFields;
+}
+$currentSocnetCamerasId = CCamerasSocnet::$iCatId;
+foreach($arResult["CAMERAS_ALL_ITEMS_NOT_SORTED"] as $id => $val){
+    $arrCamerasAll = array_flip($val["PROPERTIES"]["USER_GROUPS"]["VALUE"]);
+    if(isset($arrCamerasAll[$currentSocnetCamerasId])){
+        $arResult["CAMERAS_ALL_ITEMS"][$id] = $val;
+    }
 }
 /*echo '<br/> $arResult["CAMERAS_ALL_ITEMS"] '. __LINE__.'* ' .  __FILE__ . ' <pre>';
 print_r($arResult["CAMERAS_ALL_ITEMS"]);
