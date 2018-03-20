@@ -1,0 +1,38 @@
+.container-component-cameras-show{
+	margin-top: 20px;
+}
+.component-title{
+	display: inline;
+}
+.cameras-view{
+	width: 100%;
+}
+.main-cameras-view{
+	text-align: center;
+	display: none;
+}
+.all-cameras-available{
+	display: inline-block;
+	margin-top: 15px;
+}
+.all-cameras-available-row{
+	display: inline-block;
+	width: 100%;
+	margin-bottom: 15px;
+}
+.item-camera-available{
+	float: left;
+	width: 20%;
+	display: inline-block;
+	margin-right: 5%;
+}
+.item-camera-available-image{
+	width: 100%;
+	cursor: pointer;
+}
+.item-camera-available-text{
+	cursor: pointer;
+}
+.item-camera-available-image img{
+	width: inherit;
+}
